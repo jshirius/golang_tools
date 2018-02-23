@@ -1,11 +1,15 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/tealeg/xlsx"
 )
+
+const MaxCol = 14 //列の最大値
 
 func main() {
 
@@ -38,14 +42,14 @@ func main() {
 	for _, sheet := range xlFile.Sheets {
 
 		//タイトル
-		titles := [12]string{}
+		titles := [MaxCol]string{}
 
-		print(sheet.MaxRow)
+		//print(sheet.MaxRow)
 		//行に対する読み込み
 		for i := 0; i < sheet.MaxRow; i++ {
 
 			//内容
-			infos := [12]string{}
+			infos := [MaxCol]string{}
 
 			//列に対する読み込み
 			for j := 0; j < sheet.MaxCol; j++ {
@@ -66,7 +70,7 @@ func main() {
 
 			for _, word := range infos {
 				if len(word) > 0 {
-					fmt.Println(word)
+					//fmt.Println(word)
 				}
 
 			}
@@ -74,12 +78,15 @@ func main() {
 			//ファイル出力？
 			if i > 0 {
 				//ファイル開く
-
+				fileName := infos[1] + ".txt"
+				fmt.Println(fileName)
+				outPutTextFile(fileName, titles, infos)
 				//タイトル出力
 
 				//内容出力
 
 				//ファイル閉じる
+
 			}
 
 			//列の読み込み
@@ -111,7 +118,64 @@ func main() {
 				}
 			}
 		*/
-
+		break
 	}
 
+}
+
+//配列のコピーになっているから、どこかのタイミングでスライスに変更しよう
+func outPutTextFile(fileName string, titles [MaxCol]string, infos [MaxCol]string) {
+	//ファイルオープン
+	fp := newFile(fileName)
+	defer fp.Close()
+	writer := bufio.NewWriter(fp)
+
+	//BOMを追加する
+	writer.Write([]byte{0xEF, 0xBB, 0xBF})
+	writeString := ""
+	//for j := 0; j < len(infos); j++ {
+
+	//ファイル名
+	writeString += infos[1] + "\n\n"
+
+	//キーワード出力
+	writeString += "■キーワード \n"
+	writeString += infos[2] + " " + infos[3] + " " + infos[4] + " " + infos[5] + "\n\n"
+	//fmt.Printf("%s\n", text)
+	//ターゲット読者出力
+	writeString += "■ターゲット読者(検索意図) \n"
+	writeString += infos[6] + "\n\n"
+
+	//タイトル
+	writeString += "■タイトル \n"
+	writeString += infos[7] + "\n\n"
+
+	//見出し
+	writeString += "■見出し \n"
+	writeString += infos[8] + "\n\n"
+
+	//センテンス1
+
+	//センテンス2
+
+	//センテンス3
+
+	//まとめ
+
+	//備考
+
+	//}
+	_, err := writer.WriteString(writeString)
+	if err != nil {
+		log.Fatal(err)
+	}
+	writer.Flush()
+}
+
+func newFile(fn string) *os.File {
+	fp, err := os.OpenFile(fn, os.O_WRONLY|os.O_CREATE, 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return fp
 }
