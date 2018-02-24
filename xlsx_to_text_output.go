@@ -68,56 +68,20 @@ func main() {
 
 			}
 
-			for _, word := range infos {
-				if len(word) > 0 {
-					//fmt.Println(word)
-				}
-
-			}
-
 			//ファイル出力？
+			//１列目が0以上であること
 			if i > 0 {
-				//ファイル開く
-				fileName := infos[1] + ".txt"
-				fmt.Println(fileName)
-				outPutTextFile(fileName, titles, infos)
-				//タイトル出力
-
-				//内容出力
-
-				//ファイル閉じる
+				if len(infos[0]) > 0 {
+					//ファイル開く
+					fileName := infos[1] + ".txt"
+					fmt.Println(fileName)
+					outPutTextFile(fileName, titles, infos)
+				}
 
 			}
-
-			//列の読み込み
-			/*
-				for _, cell := range row.Cells {
-					text := cell.String()
-					if len(text) > 0 {
-						fmt.Printf("%s\n", text)
-					}
-
-				}
-			*/
-
-			//内容の読み込み
-			//テキストファイル作成
 
 		}
 
-		//BOMの書き出しサンプル
-		//https://pinzolo.github.io/2017/03/29/utf8-csv-with-bom-on-golang.html
-		/*
-			for _, row := range sheet.Rows {
-				for _, cell := range row.Cells {
-					text := cell.String()
-					if len(text) > 0 {
-						//fmt.Printf("%s\n", text)
-					}
-
-				}
-			}
-		*/
 		break
 	}
 
@@ -125,6 +89,7 @@ func main() {
 
 //配列のコピーになっているから、どこかのタイミングでスライスに変更しよう
 func outPutTextFile(fileName string, titles [MaxCol]string, infos [MaxCol]string) {
+
 	//ファイルオープン
 	fp := newFile(fileName)
 	defer fp.Close()
@@ -147,22 +112,38 @@ func outPutTextFile(fileName string, titles [MaxCol]string, infos [MaxCol]string
 	writeString += infos[6] + "\n\n"
 
 	//タイトル
-	writeString += "■タイトル \n"
+	writeString += ".■タイトル\n"
 	writeString += infos[7] + "\n\n"
 
+	//Div
+	writeString += "[dev]\n\n"
+
 	//見出し
-	writeString += "■見出し \n"
+	writeString += ".■見出し\n"
 	writeString += infos[8] + "\n\n"
 
 	//センテンス1
+	writeString += ".#第1段落\n"
+	writeString += infos[9] + "\n\n"
 
 	//センテンス2
+	writeString += ".#第2段落\n"
+	writeString += infos[10] + "\n\n"
 
 	//センテンス3
+	writeString += ".#第3段落\n"
+	writeString += infos[11] + "\n\n"
 
 	//まとめ
+	writeString += ".#まとめ\n"
+	writeString += infos[12] + "\n\n"
+
+	//div
+	writeString += "[/dev]\n"
 
 	//備考
+	writeString += "--------備考----------- \n"
+	writeString += infos[13] + "\n\n"
 
 	//}
 	_, err := writer.WriteString(writeString)
