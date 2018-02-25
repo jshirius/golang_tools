@@ -116,7 +116,7 @@ func outPutTextFile(fileName string, titles [MaxCol]string, infos [MaxCol]string
 	writeString += infos[7] + "\n\n"
 
 	//Div
-	writeString += "[dev]\n\n"
+	writeString += "[div]\n\n"
 
 	//見出し
 	writeString += ".■見出し\n"
@@ -139,7 +139,7 @@ func outPutTextFile(fileName string, titles [MaxCol]string, infos [MaxCol]string
 	writeString += infos[12] + "\n\n"
 
 	//div
-	writeString += "[/dev]\n"
+	writeString += "[/div]\n"
 
 	//備考
 	writeString += "--------備考----------- \n"
