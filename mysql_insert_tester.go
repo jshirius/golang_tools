@@ -2,7 +2,6 @@
 //MySqlに「InsertCount」に設定した分だけデータを追加して、追加にかかった時間を計測
 //さらに読み出し時間の計測
 
-
 package main
 
 import (
@@ -84,15 +83,16 @@ func main() {
 	fmt.Println(strconv.Itoa(count) + "件インサートにかかった時間")
 	fmt.Println(af_t.Sub(bf_t))
 
-	//以下のように*でカラムをしてもデータが取れないので注意が必要
+	//以下のように*でカラムをしてもなぜかデータが取れないので注意が必要
 	//rows, err := dbmap.Select(Person{}, `SELECT * FROM t_persons;`)
-	rows, err := dbmap.Select(Person{}, `SELECT id,name FROM t_persons;`)
+	rows, err := dbmap.Select(Person{}, `SELECT id,name,age,adress,str2 FROM t_persons where age < 10000`)
 
-	for i, r := range rows {
-		row := r.(*Person)
-		fmt.Printf("[%d] id: %d, name: %s\n", i, row.ID, row.Name)
-	}
-
+	/*
+		for i, r := range rows {
+			row := r.(*Person)
+			fmt.Printf("[%d] id: %d, name: %s\n", i, row.ID, row.Name)
+		}
+	*/
 	bf_t = time.Now()
 	fmt.Println(strconv.Itoa(len(rows)) + "件取得までにかかった時間")
 	fmt.Println(bf_t.Sub(af_t))

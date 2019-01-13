@@ -73,9 +73,12 @@ func main() {
 	fmt.Println(af_t.Sub(bf_t))
 
 	/**
-	 * コレクションのデータをすべて取得する
+	 * コレクションのデータを10000万件ほど取得する
+	 *
 	**/
-	query := db.C("people").Find(bson.M{})
+	query := db.C("people").Find(bson.M{
+		"age": bson.M{"$lt": 10000},
+	})
 	var persons []Person
 	query.All(&persons)
 
